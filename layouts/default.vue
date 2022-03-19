@@ -4,7 +4,7 @@
         <NuxtLink to="/">인덱스 페이지</NuxtLink>
         <NuxtLink to="/main">메인 페이지</NuxtLink>
         <NuxtLink to="/product">상품 페이지</NuxtLink>
-        
+        ㅎㅇ
         <Nuxt/>
     </div>
 </template>

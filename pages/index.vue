@@ -2,7 +2,7 @@
   <div class="app">
     <main>
       <div>
-        <input type="text" />
+        <SearchInput v-model="searchKeyword" @search="searchProducts" />
       </div>
       <ul>
         <li class="item flex" v-for="product in products" :key="product.id" @click="moveToDetailPage(product.id)">
@@ -11,13 +11,19 @@
           <span>{{ product.price }}</span>
         </li>
       </ul>
+      <div class="cart-wrapper">
+        <button class="btn" @click="moveToCartPage">장바구니 바로가기</button>
+      </div>
     </main>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import SearchInput from '@/components/SearchInput.vue';
+import { fetchProductsByKeyword } from '@/api';
 export default {
+  components: { SearchInput },
   async asyncData() {
     const response = await axios.get('http://localhost:3000/products');
     console.log(response);
@@ -29,15 +35,28 @@ export default {
   },
   data() {
     return {
-      products: [],
+      searchKeyword: '',
     };
   },
-  components: {},
 
   methods: {
     moveToDetailPage(id) {
       console.log(id);
       this.$router.push(`detail/${id}`);
+    },
+
+    searchProducts() {
+      fetchProductsByKeyword(this.searchKeyword).then(response => {
+        const products = response.data.map(item => ({
+          ...item,
+          imageUrl: `${item.imageUrl}?random=${Math.random()}`,
+        }));
+        this.products = products;
+      });
+    },
+
+    moveToCartPage() {
+      this.$router.push('/cart');
     },
   },
 };

@@ -8,4 +8,19 @@ function fetchProductById(id) {
   return instance.get(`/products/${id}`);
 }
 
-export { fetchProductById };
+function fetchProductsByKeyword(keyword) {
+  return instance.get(`/products`, {
+    params: {
+      name_like: keyword,
+    },
+  });
+}
+function createCartItem(cartItem) {
+  return instance.post('/carts', cartItem);
+}
+
+function fetchCartItems() {
+  return instance.get('/carts');
+}
+
+export { fetchProductById, fetchProductsByKeyword, createCartItem, fetchCartItems };
